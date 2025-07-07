@@ -33,7 +33,12 @@ def filtrar_projetos_computacao(df):
 
 def contar_projetos_por_ano(df):
     """Conta a quantidade de projetos por ano."""
-    return df['ano'].value_counts().sort_index().reset_index().rename(columns={'index': 'ano', 'ano': 'quantidade_projetos'})
+    contagem = df['ano'].value_counts().sort_index()
+    df_ano = pd.DataFrame({
+        'ano': contagem.index.astype(int),
+        'quantidade_projetos': contagem.values
+    })
+    return df_ano
 
 
 def aplicar_regressao_linear(df_ano):
@@ -66,9 +71,9 @@ def gerar_grafico_evolucao(df_ano, media, output_path):
 # Execução do processo completo
 # ==============================
 
-caminho_csv = "/mnt/data/projetos-de-pesquisa.csv"
-saida_csv_filtrado = "/mnt/data/projetos_computacao_ufrn.csv"
-saida_grafico = "/mnt/data/evolucao_projetos_computacao.png"
+caminho_csv = "../data/projetos-de-pesquisa.csv"
+saida_csv_filtrado = "../data/projetos_computacao_ufrn.csv"
+saida_grafico = "../data/evolucao_projetos_computacao.png"
 
 # Processamento
 df_raw = carregar_dados(caminho_csv)
